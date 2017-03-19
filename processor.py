@@ -10,7 +10,7 @@ from sklearn import preprocessing, cross_validation
 df = pd.read_excel('./data/titanic.xls')
 
 df.drop(['body', 'name'], 1, inplace=True)
-df.astype(float,raise_on_error=False)
+df.astype(float, raise_on_error=False)
 df.fillna(0, inplace=True)
 
 
