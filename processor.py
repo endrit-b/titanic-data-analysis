@@ -10,7 +10,7 @@ from sklearn import preprocessing, cross_validation
 df = pd.read_excel('./data/titanic.xls')
 
 df.drop(['body', 'name'], 1, inplace=True)
-df.convert_objects(convert_numeric=True)
+df.astype(float,raise_on_error=False)
 df.fillna(0, inplace=True)
 
 
@@ -24,7 +24,7 @@ def handle_non_numeric_values(df):
         def convert_to_int(val):
             return text_digit_vals[val]
 
-        if df[column].dtype != np.int64 and df[column] != np.float64:
+        if df[column].dtype.kind not in 'fi':
             column_contents = df[column].values.tolist()
             unique_elements = set(column_contents)
 
@@ -39,4 +39,44 @@ def handle_non_numeric_values(df):
     return df
 
 df = handle_non_numeric_values(df)
-print(df.head())
+print('hello', df.head())
+
+##############################################
+X = np.array(df.drop(['survived'], 1)).astype(float)
+Y = np.array(df['survived'])
+
+clf = KMeans(n_clusters=2)
+clf.fit(X)
+
+correct = 0
+
+for i in range(len(X)):
+    predict_me = np.array(X[i].astype(float))
+    predict_me = predict_me.reshape(-1, len(predict_me))
+    prediction = clf.predict(predict_me)
+    if prediction[0] == Y[i]:
+        correct += 1
+
+print('Correct prediction: ', correct/len(X))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
