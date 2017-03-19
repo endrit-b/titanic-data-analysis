@@ -8,10 +8,8 @@ X = np.array([[1, 2],
               [1.5, 1.8],
               [8, 8],
               [1, 0.6],
-              [9, 11]])
-
-plt.scatter(X[:, 0], X[:, 1], s=150)
-plt.show()
+              [9, 11],
+              ])
 
 colors = 10 * ['g', 'r', 'c', 'b', 'k']
 
@@ -22,8 +20,6 @@ class KMeansClustering:
         self.k = k
         self.tol = tol
         self.max_iter = max_iter
-        self.centroids = {}
-        self.classifications = {}
 
     def fit(self, data):
         self.centroids = {}
@@ -74,9 +70,19 @@ for centroid in clf.centroids:
 
 
 for classification in clf.classifications:
-    color = colors
-
+    color = colors[classification]
     for featureset in clf.classifications[classification]:
-        plt.scatter(featureset[0], featureset[1], marker='x', color=colors, s=150, linewidths=5)
+        plt.scatter(featureset[0], featureset[1], marker='x', color=color, s=150, linewidths=5)
+
+
+random_vals = np.array([[1, 3],
+              [8, 9],
+              [0, 3],
+              [5, 4],
+              [6, 4], [9, 8]])
+
+for val in random_vals:
+    classification = clf.predict(val)
+    plt.scatter(val[0], val[1], marker="*", color=colors[classification], s=150, linewidth=5)
 
 plt.show()
